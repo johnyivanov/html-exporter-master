@@ -37,22 +37,15 @@ import uk.co.certait.htmlexporter.demo.domain.Region;
 import uk.co.certait.htmlexporter.demo.domain.Sale;
 import uk.co.certait.htmlexporter.demo.domain.SalesReportData;
 import uk.co.certait.htmlexporter.demo.domain.Store;
-import uk.co.certait.htmlexporter.pdf.PdfExporter;
 import uk.co.certait.htmlexporter.writer.excel.ExcelExporter;
-import uk.co.certait.htmlexporter.writer.ods.OdsExporter;
 
 public class ReportGenerator {
 	public ReportGenerator() throws Exception {
 		File someFile = new File("report.html");
 		String html;
 		html = Files.lines(someFile.toPath()).collect(Collectors.joining(System.lineSeparator()));
-//		String html = generateHTML("reportMultiSheet.vm");
-		 //String html = generateHTML("report.vm");
-//		saveFile("report.html", html.getBytes());
 
 		new ExcelExporter().exportHtml(html, new File("./report.xlsx"));
-		new PdfExporter().exportHtml(html, new File("./report.pdf"));
-		new OdsExporter().exportHtml(html, new File("./report.ods"));
 	}
 
 	public static void main(String[] args) throws Exception {
