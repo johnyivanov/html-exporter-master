@@ -15,17 +15,11 @@
  */
 package uk.co.certait.htmlexporter.writer.excel;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.jsoup.nodes.Element;
-
-import uk.co.certait.htmlexporter.css.Style;
-import uk.co.certait.htmlexporter.css.StyleMap;
 import uk.co.certait.htmlexporter.ss.CellRange;
 import uk.co.certait.htmlexporter.ss.Function;
 import uk.co.certait.htmlexporter.writer.AbstractTableCellWriter;
@@ -33,26 +27,23 @@ import uk.co.certait.htmlexporter.writer.AbstractTableCellWriter;
 public class ExcelTableCellWriter extends AbstractTableCellWriter {
 
     private Sheet sheet;
-    private StyleMap styleMapper;
     private ExcelStyleGenerator styleGenerator;
 
-    public ExcelTableCellWriter(Sheet sheet, StyleMap styleMapper) {
+    public ExcelTableCellWriter(Sheet sheet, Object styleMapper) {
         this.sheet = sheet;
-        this.styleMapper = styleMapper;
 
         styleGenerator = new ExcelStyleGenerator();
     }
 
     @Override
     public void renderCell(Element element, int rowIndex, int columnIndex) {
-        Cell cell = sheet.getRow(rowIndex).createCell(columnIndex);
+        //Cell cell = sheet.getRow(rowIndex).createCell(columnIndex);
 
-        cell = sheet.getRow(rowIndex).createCell(columnIndex, Cell.CELL_TYPE_STRING);
+        Cell cell = sheet.getRow(rowIndex).createCell(columnIndex, CellType.STRING);
         cell.setCellValue(getElementText(element).replace("SpecialNewLineCharacter", System.lineSeparator()));
 
 
-        Style style = styleMapper.getStyleForElement(element);
-        cell.setCellStyle(styleGenerator.getStyle(cell, style));
+        cell.setCellStyle(styleGenerator.getStyle(cell, null));
 
         if (isDateCell(element)) {
             CreationHelper createHelper = sheet.getWorkbook().getCreationHelper();

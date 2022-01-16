@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.apache.commons.collections.list.GrowthList;
+import org.apache.commons.collections4.list.GrowthList;
 import org.apache.poi.ss.usermodel.Cell;
 
 public class RowTracker {
@@ -28,7 +28,7 @@ public class RowTracker {
 	protected void updateRows(int rowIndex, int columnIndex, int rowSpan, int columnSpan) {
 		for (int i = rowIndex; i < rowIndex + rowSpan; ++i) {
 			if (!rows.containsKey(i)) {
-				List<String> cells = GrowthList.decorate(new ArrayList<Cell>());
+				List<String> cells = GrowthList.growthList(new ArrayList<String>());
 
 				rows.put(i, cells);
 			}

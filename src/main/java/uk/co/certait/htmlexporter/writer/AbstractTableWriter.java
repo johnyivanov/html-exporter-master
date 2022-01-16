@@ -17,8 +17,6 @@ package uk.co.certait.htmlexporter.writer;
 
 import org.jsoup.nodes.Element;
 
-import uk.co.certait.htmlexporter.css.StyleMap;
-
 public abstract class AbstractTableWriter implements TableWriter {
 	private TableRowWriter rowWriter;
 
@@ -26,7 +24,7 @@ public abstract class AbstractTableWriter implements TableWriter {
 		this.rowWriter = rowWriter;
 	}
 
-	public int writeTable(Element table, StyleMap styleMapper, int startRow) {
+	public int writeTable(Element table, Object styleMapper, int startRow) {
 		renderTable(table);
 
 		int rowIndex = startRow;

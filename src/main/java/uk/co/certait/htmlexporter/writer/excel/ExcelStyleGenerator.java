@@ -15,25 +15,13 @@
  */
 package uk.co.certait.htmlexporter.writer.excel;
 
-import java.awt.Color;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.VerticalAlignment;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFColor;
-import org.apache.poi.xssf.usermodel.XSSFFont;
 
-import uk.co.certait.htmlexporter.css.CssColorProperty;
-import uk.co.certait.htmlexporter.css.CssIntegerProperty;
-import uk.co.certait.htmlexporter.css.CssStringProperty;
-import uk.co.certait.htmlexporter.css.Style;
+import javax.swing.text.Style;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ExcelStyleGenerator {
 	private Map<Style, XSSFCellStyle> styles;
@@ -45,12 +33,10 @@ public class ExcelStyleGenerator {
 	public CellStyle getStyle(Cell cell, Style style) {
 		XSSFCellStyle cellStyle;
 
-		if (styles.containsKey(style)) {
-			cellStyle = styles.get(style);
-		} else {
+
 			cellStyle = (XSSFCellStyle) cell.getSheet().getWorkbook().createCellStyle();
 
-			applyBackground(style, cellStyle);
+			/*applyBackground(style, cellStyle);
 			applyBorders(style, cellStyle);
 			applyFont(cell, style, cellStyle);
 			applyHorizontalAlignment(style, cellStyle);
@@ -58,13 +44,12 @@ public class ExcelStyleGenerator {
 			applyWidth(cell, style);
 
 			styles.put(style, cellStyle);
-		}
-
+*/
 		cellStyle.setWrapText(true);
 		return cellStyle;
 	}
 
-	protected void applyBackground(Style style, XSSFCellStyle cellStyle) {
+/*	protected void applyBackground(Style style, XSSFCellStyle cellStyle) {
 		if (style.isBackgroundSet()) {
 			cellStyle.setFillPattern(XSSFCellStyle.SOLID_FOREGROUND);
 			cellStyle.setFillForegroundColor(new XSSFColor(style.getProperty(CssColorProperty.BACKGROUND)));
@@ -158,5 +143,5 @@ public class ExcelStyleGenerator {
 		}
 
 		return font;
-	}
+	}*/
 }

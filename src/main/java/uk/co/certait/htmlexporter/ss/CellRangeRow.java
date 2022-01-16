@@ -18,7 +18,7 @@ package uk.co.certait.htmlexporter.ss;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections.list.GrowthList;
+import org.apache.commons.collections4.list.GrowthList;
 
 /**
  * A CellRangeRow represents a row of data within a CellRange.
@@ -34,7 +34,7 @@ public class CellRangeRow {
 	@SuppressWarnings("unchecked")
 	protected CellRangeRow(int index) {
 		this.index = index;
-		cells = GrowthList.decorate(new ArrayList<TableCellReference>());
+		cells = GrowthList.growthList(new ArrayList<TableCellReference>());
 	}
 
 	/**

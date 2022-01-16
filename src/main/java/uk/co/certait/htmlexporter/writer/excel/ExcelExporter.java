@@ -18,13 +18,12 @@ package uk.co.certait.htmlexporter.writer.excel;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jsoup.nodes.Element;
 
-import uk.co.certait.htmlexporter.css.StyleMap;
 import uk.co.certait.htmlexporter.writer.AbstractExporter;
 import uk.co.certait.htmlexporter.writer.TableWriter;
 
@@ -32,7 +31,6 @@ public class ExcelExporter extends AbstractExporter {
 	public void exportHtml(String html, OutputStream out) throws IOException {
 		Workbook workbook = new XSSFWorkbook();
 
-		StyleMap styleMapper = getStyleMapper(html);
 		Sheet sheet = null;
 		int startRow = 0;
 
@@ -59,9 +57,9 @@ public class ExcelExporter extends AbstractExporter {
 			}
 
 			TableWriter writer = new ExcelTableWriter(new ExcelTableRowWriter(sheet, new ExcelTableCellWriter(sheet,
-					styleMapper)));
+					null)));
 
-			startRow += writer.writeTable(element, styleMapper, startRow) + 1;
+			startRow += writer.writeTable(element, null, startRow) + 1;
 			sheet.createRow(startRow);
 		}
 

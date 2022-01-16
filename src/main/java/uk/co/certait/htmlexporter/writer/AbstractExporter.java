@@ -15,19 +15,16 @@
  */
 package uk.co.certait.htmlexporter.writer;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import uk.co.certait.htmlexporter.css.StyleMap;
-import uk.co.certait.htmlexporter.css.StyleParser;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
 public abstract class AbstractExporter implements Exporter {
 
@@ -52,16 +49,6 @@ public abstract class AbstractExporter implements Exporter {
 		return document.getElementsByTag("table");
 	}
 
-	protected StyleMap getStyleMapper(String html) {
-		Document document = Jsoup.parse(html);
-		Elements styles = document.getElementsByTag("style");// FIXME parsing
-																// twice
-
-		StyleParser parser = new StyleParser();
-		StyleMap mapper = new StyleMap(parser.parseStyles(styles));
-
-		return mapper;
-	}
 
 	protected boolean isNewSheet(Element element) {
 		return Boolean.valueOf(element.attr(DATA_NEW_SHEET_ATTRIBUTE));

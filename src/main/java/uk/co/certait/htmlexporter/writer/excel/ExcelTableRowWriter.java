@@ -18,9 +18,7 @@ package uk.co.certait.htmlexporter.writer.excel;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.ss.util.RegionUtil;
 import org.jsoup.nodes.Element;
-
 import uk.co.certait.htmlexporter.writer.AbstractTableRowWriter;
 import uk.co.certait.htmlexporter.writer.TableCellWriter;
 
@@ -48,7 +46,7 @@ public class ExcelTableRowWriter extends AbstractTableRowWriter {
 
 		sheet.addMergedRegion(range);
 
-		RegionUtil.setBorderBottom(cell.getCellStyle().getBorderBottom(), range, sheet, sheet.getWorkbook());
+		/*RegionUtil.setBorderBottom(cell.getCellStyle().getBorderBottom(), range, sheet, sheet.getWorkbook());
 		RegionUtil.setBorderTop(cell.getCellStyle().getBorderTop(), range, sheet, sheet.getWorkbook());
 		RegionUtil.setBorderLeft(cell.getCellStyle().getBorderLeft(), range, sheet, sheet.getWorkbook());
 		RegionUtil.setBorderRight(cell.getCellStyle().getBorderRight(), range, sheet, sheet.getWorkbook());
@@ -56,6 +54,6 @@ public class ExcelTableRowWriter extends AbstractTableRowWriter {
 		RegionUtil.setBottomBorderColor(cell.getCellStyle().getBottomBorderColor(), range, sheet, sheet.getWorkbook());
 		RegionUtil.setTopBorderColor(cell.getCellStyle().getTopBorderColor(), range, sheet, sheet.getWorkbook());
 		RegionUtil.setLeftBorderColor(cell.getCellStyle().getLeftBorderColor(), range, sheet, sheet.getWorkbook());
-		RegionUtil.setRightBorderColor(cell.getCellStyle().getRightBorderColor(), range, sheet, sheet.getWorkbook());
+		RegionUtil.setRightBorderColor(cell.getCellStyle().getRightBorderColor(), range, sheet, sheet.getWorkbook());*/
 	}
 }
