@@ -63,11 +63,14 @@ public abstract class AbstractTableCellWriter implements TableCellWriter {
 	 * @return The text to be output for this Cell.
 	 */
 	public String getElementText(Element element) {
-		String text = element.ownText();
-
-		for (Element child : element.children()) {
-			text = child.ownText();
+		String text = element.wholeText();
+		if(text.length()>Short.MAX_VALUE){
+			text = text.substring(0,Short.MAX_VALUE);
 		}
+
+		/*for (Element child : element.children()) {
+			text = child.ownText();
+		}*/
 
 		return text;
 	}

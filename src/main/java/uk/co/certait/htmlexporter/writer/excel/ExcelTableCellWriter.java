@@ -37,10 +37,14 @@ public class ExcelTableCellWriter extends AbstractTableCellWriter {
 
     @Override
     public void renderCell(Element element, int rowIndex, int columnIndex) {
-        //Cell cell = sheet.getRow(rowIndex).createCell(columnIndex);
 
+        int cellHight = element.wholeText().length() - element.wholeText().replace(System.lineSeparator(), "").length();
+        if(cellHight>0){
+            sheet.getRow(rowIndex).setHeightInPoints(((cellHight-2)*sheet.getDefaultRowHeightInPoints()));
+
+        }
         Cell cell = sheet.getRow(rowIndex).createCell(columnIndex, CellType.STRING);
-        cell.setCellValue(getElementText(element).replace("SpecialNewLineCharacter", System.lineSeparator()));
+        cell.setCellValue(getElementText(element));
 
 
         cell.setCellStyle(styleGenerator.getStyle(cell, null));
