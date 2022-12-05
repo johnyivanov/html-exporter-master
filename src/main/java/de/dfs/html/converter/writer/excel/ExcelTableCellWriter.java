@@ -29,8 +29,9 @@ public class ExcelTableCellWriter extends AbstractTableCellWriter {
     private Sheet sheet;
     private ExcelStyleGenerator styleGenerator;
 
-    public ExcelTableCellWriter(Sheet sheet, Object styleMapper) {
+    public ExcelTableCellWriter (Sheet sheet){
         this.sheet = sheet;
+
 
         styleGenerator = new ExcelStyleGenerator();
     }

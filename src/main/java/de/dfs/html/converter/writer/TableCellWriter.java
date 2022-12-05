@@ -28,4 +28,6 @@ public interface TableCellWriter {
 	public static final String DATA_FREEZE_PANE_CELL = "data-freeze-pane-cell";
 
 	public void writeCell(Element cell, int row, int column);
+
+
 }
