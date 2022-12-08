@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xml:lang="de" xmlns="http://www.w3.org/1999/xhtml">
+
+<body>
+<div id="footer">
+    <div id="pageFooterLeft" class="footer">
+        <span>12.01.2022</span>
+    </div>
+    <div id="pageFooterCenter" class="footer">
+        <span>Some footer</span>
+    </div>
+    <div id="pageFooterRight" class="footer">
+        <span>Pages</span>
+        <span id="pagenumber"/>
+        /
+
+        <span id="pagecount"/>
+    </div>
+</div>
+
+<h2>Settings</h2>
+<table id="outer" border="1" cellpadding="5" style="border-width:1px;">
+    <thead>
+    <tr bgcolor="#000000" style="color:white; background-color:#000000;">
+        <td>Test</td>
+        <td>Test2</td>
+        <td>Test3</td>
+        <td>Test4</td>
+    </tr>
+    </thead>
+    <!-- This is a comment -->
+    <tbody>
+    <tr>
+        <td rowspan="4">
+            <br />
+            ZZZ:16038
+            <br />
+            ZWT:11659
+            <br />
+            ZWS:16129
+        </td>
+        <td rowspan="4">
+            <br />
+            ZZZ:16038
+            <br />
+            ZWT:11659
+            <br />
+            ZWS:16129
+        </td>
+        <td>03.08.20 - 00:00</td>
+        <td>04.08.20 - 00:00</td>
+    </tr>
+    <tr bgcolor="#000000" style="color:white; background-color:#000000;">
+        <td colspan="2">Tätigkeit / Buchungsstatus / Einschränkungen</td>
+    </tr>
+    <tr>
+        <td colspan="2">*</td>
+    </tr>
+    </tbody>
+</table>
+<h2>Some Header here</h2>
+<table class="content">
+    <thead>
+    <tr bgcolor="#000000" style="color:white; background-color:#000000;">
+        <th style="width: 40px; text-align: left;" align="left">Pers.-Nr.</th>
+        <th style="width: 35px; text-align: left;" align="left">Initialen</th>
+        <th style="text-align: left;" align="left">Name</th>
+        <th style="text-align: left;" align="left">EBG</th>
+        <th style="text-align: left;" align="left">Test</th>
+        <th style="width: 40px; text-align: left;" align="left">
+            Berech
+            <br/>
+            nn
+        </th>
+        <th style="width: 30px; text-align: left;" align="left">T-Code</th>
+        <th style="width: 35px; text-align: left;" align="left">Coach</th>
+        <th style="width: 30px; text-align: left;" align="left">Start</th>
+        <th style="width: 30px; text-align: left;" align="left">End</th>
+        <th style="text-align: right;" align="right">Timing</th>
+        <th align="right" style="width: 40px; text-align: right;">Erhalt</th>
+        <th align="right" style="width: 40px; text-align: right;">Kein Erhalt</th>
+        <th style="text-align: left;" align="left">Contrss</th>
+        <th style="text-align: left;" align="left">Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="width: 40px;" align="left">11356</td>
+        <td style="width: 35px; text-align: left;" align="left">VVBK</td>
+        <td style="text-align: left;" align="left">Stall,</td>
+        <td>03</td>
+        <td>Uner</td>
+        <td style="width: 40px;">Uner</td>
+        <td style="width: 30px; text-align: left;" align="left">V</td>
+        <td/>
+        <td style="width: 30px; text-align: left;" align="left">03.08.20 00:00</td>
+        <td style="width: 30px; text-align: left;" align="left">03.08.20 03:44</td>
+        <td style="text-align: right;">3:45</td>
+        <td style="text-align: right;">3:45</td>
+        <td style="text-align: right;"/>
+        <td>System</td>
+        <td>Redaktions</td>
+    </tr>
+    <tr>
+        <td colspan="15">Entire sum</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
