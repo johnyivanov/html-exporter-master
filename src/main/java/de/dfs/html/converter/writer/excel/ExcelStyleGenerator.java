@@ -15,13 +15,17 @@
  */
 package de.dfs.html.converter.writer.excel;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 
 import javax.swing.text.Style;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.apache.poi.ss.usermodel.FillPatternType.SOLID_FOREGROUND;
+import static org.apache.poi.xssf.usermodel.XSSFCellStyle.*;
 
 public class ExcelStyleGenerator {
 	private Map<Style, XSSFCellStyle> styles;
@@ -36,22 +40,24 @@ public class ExcelStyleGenerator {
 
 			cellStyle = (XSSFCellStyle) cell.getSheet().getWorkbook().createCellStyle();
 
+
+
 			/*applyBackground(style, cellStyle);
 			applyBorders(style, cellStyle);
 			applyFont(cell, style, cellStyle);
 			applyHorizontalAlignment(style, cellStyle);
 			applyverticalAlignment(style, cellStyle);
-			applyWidth(cell, style);
+			applyWidth(cell, style);*/
 
 			styles.put(style, cellStyle);
-*/
+
 		cellStyle.setWrapText(true);
 		return cellStyle;
 	}
 
-/*	protected void applyBackground(Style style, XSSFCellStyle cellStyle) {
+	/*protected void applyBackground(Style style, XSSFCellStyle cellStyle) {
 		if (style.isBackgroundSet()) {
-			cellStyle.setFillPattern(XSSFCellStyle.SOLID_FOREGROUND);
+			cellStyle.setFillPattern(SOLID_FOREGROUND);
 			cellStyle.setFillForegroundColor(new XSSFColor(style.getProperty(CssColorProperty.BACKGROUND)));
 		}
 	}
