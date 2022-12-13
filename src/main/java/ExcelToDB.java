@@ -3,7 +3,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -11,28 +10,21 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static java.sql.DriverManager.*;
 
 public class ExcelToDB {
     public static void main(String[] args)  {
 
         //Database connection
         Connection connection = null;
-        //URL к базе состоит из протокола:подпротокола://[хоста]:[порта_СУБД]/[БД] и других_сведений
         String url = "jdbc:postgresql://127.0.0.1:5432/northwind";
-        //Имя пользователя БД
         String name = "postgres";
-        //Пароль
         String password = "1965";
         try {
-            //Загружаем драйвер
+
             Class.forName("org.postgresql.Driver");
-            System.out.println("Драйвер подключен");
-            //Создаём соединение
             connection = DriverManager.getConnection(url, name, password);
             System.out.println("Соединение установлено");
 
-            //Connection con= getConnection("jdbc:postgresql://127.0.0.1:5432/northwind","postgres","1965");
             Statement stmt=connection.createStatement();
 
             //create a new table in the database
@@ -69,7 +61,7 @@ public class ExcelToDB {
 
 
         } catch (Exception ex) {
-            //выводим наиболее значимые сообщения
+
             Logger.getLogger(ExcelToDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (connection != null) {

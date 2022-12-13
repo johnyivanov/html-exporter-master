@@ -18,15 +18,22 @@ package de.dfs.html.converter.writer.excel;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import de.dfs.html.converter.writer.TableWriter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.RegionUtil;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFTable;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.jsoup.nodes.Element;
 
 import de.dfs.html.converter.writer.AbstractExporter;
+
+import javax.swing.table.TableCellEditor;
+
+import static org.apache.poi.ss.usermodel.VerticalAlignment.DISTRIBUTED;
 
 public class ExcelExporter extends AbstractExporter {
     public void exportHtml(String html, OutputStream out) throws IOException {
@@ -57,82 +64,50 @@ public class ExcelExporter extends AbstractExporter {
                 startRow = 0;
             }
 
-            //TableWriter writer = new ExcelTableWriter(new ExcelTableRowWriter(sheet, new ExcelTableCellWriter(sheet
-            //)));
+            //TableWriter writer = new ExcelTableWriter(new ExcelTableRowWriter(sheet, new ExcelTableCellWriter(sheet)));
 
 
             sheet.setDisplayGridlines(false);
-            sheet.setMargin(Sheet.LeftMargin,500);
 
-            //sheet.setColumnHidden(1,true);
+
+            //sheet.setColumnHidden(1
 
 
             Cell cell;
+
 
 
             for (int i = 0; i < 4; i++) {
                 Row row = sheet.createRow(i);
 
 
+
                 if (i == 0) {
-                    row.setHeight((short) 1200);
-                    Font font = workbook.createFont();
-                    font.setFontHeightInPoints((short) 15);
-                    font.setFontName("Courier New");
-
-
-
+                    row.setHeight((short) 1000);
 
                     cell = row.createCell(0);
                     cell.setCellValue("test");
-                    cell.setCellStyle(getCellStyleNoRightBorder(workbook));
-                    cell.getCellStyle().setFont(font);
-                    cell.getCellStyle().setFillBackgroundColor(IndexedColors.BLACK.index);
-                    cell.getCellStyle().setFillPattern(FillPatternType.BIG_SPOTS);
-                    cell.getCellStyle().setFillForegroundColor(IndexedColors.BLACK.getIndex());
-
-
+                    cell.setCellStyle(getCellHeaderStyle(workbook,cell));
 
                     cell = row.createCell(1);
                     cell.setCellValue("test2");
-                    cell.setCellStyle(getCellStyleNoLeftBorder(workbook));
-                    cell.getCellStyle().setFont(font);
-                    cell.getCellStyle().setFillBackgroundColor(IndexedColors.BLACK.index);
-                    cell.getCellStyle().setFillPattern(FillPatternType.BIG_SPOTS);
-                    cell.getCellStyle().setFillForegroundColor(IndexedColors.BLACK.getIndex());
-
+                    cell.setCellStyle(getCellHeaderStyle(workbook,cell));
 
                     cell = row.createCell(2);
                     cell.setCellValue("test3");
-                    cell.setCellStyle(getCellStyleNoRightBorder(workbook));
-                    cell.getCellStyle().setFont(font);
-                    cell.getCellStyle().setFillBackgroundColor(IndexedColors.BLACK.index);
-                    cell.getCellStyle().setFillPattern(FillPatternType.BIG_SPOTS);
-                    cell.getCellStyle().setFillForegroundColor(IndexedColors.BLACK.getIndex());
+                    cell.setCellStyle(getCellHeaderStyle(workbook,cell));
 
                     cell = row.createCell(3);
                     cell.setCellValue("test4");
-                    cell.setCellStyle(getCellStyleNoLeftBorder(workbook));
-                    cell.getCellStyle().setFont(font);
-                    cell.getCellStyle().setFillBackgroundColor(IndexedColors.BLACK.index);
-                    cell.getCellStyle().setFillPattern(FillPatternType.BIG_SPOTS);
-                    cell.getCellStyle().setFillForegroundColor(IndexedColors.BLACK.getIndex());
+                    cell.setCellStyle(getCellHeaderStyle(workbook,cell));
 
                     cell = row.createCell(4);
                     cell.setCellValue("test5");
-                    cell.setCellStyle(getCellStyleStandart(workbook));
-                    cell.getCellStyle().setFont(font);
-                    cell.getCellStyle().setFillBackgroundColor(IndexedColors.BLACK.index);
-                    cell.getCellStyle().setFillPattern(FillPatternType.BIG_SPOTS);
-                    cell.getCellStyle().setFillForegroundColor(IndexedColors.BLACK.getIndex());
+                    cell.setCellStyle(getCellHeaderStyle(workbook,cell));
 
                     cell = row.createCell(5);
                     cell.setCellValue("test6");
-                    cell.setCellStyle(getCellStyleStandart(workbook));
-                    cell.getCellStyle().setFont(font);
-                    cell.getCellStyle().setFillBackgroundColor(IndexedColors.BLACK.index);
-                    cell.getCellStyle().setFillPattern(FillPatternType.BIG_SPOTS);
-                    cell.getCellStyle().setFillForegroundColor(IndexedColors.BLACK.getIndex());
+                    cell.setCellStyle(getCellHeaderStyle(workbook,cell));
                 }
 
 
@@ -141,33 +116,28 @@ public class ExcelExporter extends AbstractExporter {
 
                     cell = row.createCell(0);
                     cell.setCellValue("ZZZ");
-                    cell.setCellStyle(getCellStyleNoRightBorder(workbook));
-                    cell.getCellStyle().setAlignment(HorizontalAlignment.CENTER);
+                    cell.setCellStyle(getCellStyleStandart(workbook,cell));
 
                     cell = row.createCell(1);
                     cell.setCellValue("16038");
-                    cell.setCellStyle(getCellStyleNoLeftBorder(workbook));
-                    cell.getCellStyle().setAlignment(HorizontalAlignment.CENTER);
+                    cell.setCellStyle(getCellStyleStandart(workbook,cell));
 
                     cell = row.createCell(2);
                     cell.setCellValue("ZZZ");
-                    cell.setCellStyle(getCellStyleNoRightBorder(workbook));
-                    cell.getCellStyle().setAlignment(HorizontalAlignment.CENTER);
+                    cell.setCellStyle(getCellStyleStandart(workbook,cell));
 
                     cell = row.createCell(3);
                     cell.setCellValue("16038");
-                    cell.setCellStyle(getCellStyleNoLeftBorder(workbook));
-                    cell.getCellStyle().setAlignment(HorizontalAlignment.CENTER);
+                    cell.setCellStyle(getCellStyleStandart(workbook,cell));
 
                     cell = row.createCell(4);
                     cell.setCellValue("10.20.20");
-                    cell.setCellStyle(getCellStyleStandart(workbook));
-                    cell.getCellStyle().setAlignment(HorizontalAlignment.CENTER);
+                    cell.setCellStyle(getCellStyleStandart(workbook,cell));
+
 
                     cell = row.createCell(5);
-                    cell.setCellValue("20.10.22");
-                    cell.setCellStyle(getCellStyleStandart(workbook));
-                    cell.getCellStyle().setAlignment(HorizontalAlignment.CENTER);
+                    cell.setCellValue("10.10.10");
+                    cell.setCellStyle(getCellStyleStandart(workbook,cell));
 
 
                 }
@@ -177,35 +147,29 @@ public class ExcelExporter extends AbstractExporter {
 
                     cell = row.createCell(0);
                     cell.setCellValue("ZWT");
-                    cell.setCellStyle(getCellStyleNoRightBorder(workbook));
-                    cell.getCellStyle().setAlignment(HorizontalAlignment.CENTER);
-
+                    cell.setCellStyle(getCellStyleStandart(workbook,cell));
 
                     cell = row.createCell(1);
                     cell.setCellValue("11659");
-                    cell.setCellStyle(getCellStyleNoLeftBorder(workbook));
-                    cell.getCellStyle().setAlignment(HorizontalAlignment.CENTER);
+                    cell.setCellStyle(getCellStyleStandart(workbook,cell));
 
                     cell = row.createCell(2);
                     cell.setCellValue("ZWT");
-                    cell.setCellStyle(getCellStyleNoRightBorder(workbook));
-                    cell.getCellStyle().setAlignment(HorizontalAlignment.CENTER);
+                    cell.setCellStyle(getCellStyleStandart(workbook,cell));
 
                     cell = row.createCell(3);
                     cell.setCellValue("11659");
-                    cell.setCellStyle(getCellStyleNoLeftBorder(workbook));
-                    cell.getCellStyle().setAlignment(HorizontalAlignment.CENTER);
-
+                    cell.setCellStyle(getCellStyleStandart(workbook,cell));
 
                     cell = row.createCell(4);
                     cell.setCellValue("Tätigkeit / Buchungsstatus / Einschränkungen");
-                    cell.setCellStyle(getCellStyleNoRightBorder(workbook));
-                    cell.getCellStyle().setAlignment(HorizontalAlignment.DISTRIBUTED);
+                    cell.setCellStyle(getCellStyleStandart(workbook,cell));
+
 
                     cell = row.createCell(5);
                     cell.setCellValue(" ");
-                    cell.setCellStyle(getCellStyleNoLeftBorder(workbook));
-                    cell.getCellStyle().setAlignment(HorizontalAlignment.CENTER);
+                    cell.setCellStyle(getCellStyleStandart(workbook,cell));
+
 
 
                 }
@@ -215,28 +179,28 @@ public class ExcelExporter extends AbstractExporter {
 
                     cell = row.createCell(0);
                     cell.setCellValue("ZWS");
-                    cell.setCellStyle(getCellStyleNoRightBorder(workbook));
+                    cell.setCellStyle(getCellStyleStandart(workbook,cell));
 
                     cell = row.createCell(1);
                     cell.setCellValue("16129");
-                    cell.setCellStyle(getCellStyleNoLeftBorder(workbook));
+                    cell.setCellStyle(getCellStyleStandart(workbook,cell));
 
                     cell = row.createCell(2);
                     cell.setCellValue("ZWS");
-                    cell.setCellStyle(getCellStyleNoRightBorder(workbook));
+                    cell.setCellStyle(getCellStyleStandart(workbook,cell));
 
                     cell = row.createCell(3);
                     cell.setCellValue("16129");
-                    cell.setCellStyle(getCellStyleNoLeftBorder(workbook));
+                    cell.setCellStyle(getCellStyleStandart(workbook,cell));
 
 
                     cell = row.createCell(4);
                     cell.setCellValue("*");
-                    cell.setCellStyle(getCellStyleNoRightBorder(workbook));
+                    cell.setCellStyle(getCellStyleStandart(workbook,cell));
 
                     cell = row.createCell(5);
                     cell.setCellValue(" ");
-                    cell.setCellStyle(getCellStyleNoLeftBorder(workbook));
+                    cell.setCellStyle(getCellStyleStandart(workbook,cell));
 
 
                 }
@@ -244,11 +208,7 @@ public class ExcelExporter extends AbstractExporter {
             }
 
 
-            sheet.setVerticallyCenter(true);
-            //sheet.setMargin((short) 5,15);
 
-			/*sheet.addMergedRegionUnsafe(CellRangeAddress.valueOf("A1:B1"));
-			sheet.addMergedRegionUnsafe(CellRangeAddress.valueOf("C1:D1"));*/
             sheet.addMergedRegionUnsafe(CellRangeAddress.valueOf("E3:F3"));
             sheet.addMergedRegionUnsafe(CellRangeAddress.valueOf("E4:F4"));
 
@@ -268,7 +228,7 @@ public class ExcelExporter extends AbstractExporter {
         out.close();
     }
 
-    protected CellStyle getCellHeaderStyle(Workbook workbook) {
+    protected CellStyle getCellHeaderStyle(Workbook workbook, Cell cell) {
         CellStyle cellHeaderStyle = workbook.createCellStyle();
         Font font = workbook.createFont();
         font.setFontHeightInPoints((short) 15);
@@ -276,48 +236,102 @@ public class ExcelExporter extends AbstractExporter {
         cellHeaderStyle.setFont(font);
         cellHeaderStyle.setAlignment(HorizontalAlignment.CENTER);
 
+        cellHeaderStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        cellHeaderStyle.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.getIndex());
+
+        if(cell.getColumnIndex() ==0 || cell.getColumnIndex()==2){
+              //no right border
+
+            cellHeaderStyle.setBorderTop(BorderStyle.THIN);
+            cellHeaderStyle.setTopBorderColor(IndexedColors.RED.getIndex());
+            cellHeaderStyle.setBorderLeft(BorderStyle.THIN);
+            cellHeaderStyle.setLeftBorderColor(IndexedColors.RED.getIndex());
+            cellHeaderStyle.setBorderBottom(BorderStyle.THIN);
+            cellHeaderStyle.setBottomBorderColor(IndexedColors.RED.getIndex());
+
+
+        }
+       else if(cell.getColumnIndex()==1 || cell.getColumnIndex()==3) {
+            //no left border
+
+            cellHeaderStyle.setBorderTop(BorderStyle.THIN);
+           cellHeaderStyle.setTopBorderColor(IndexedColors.RED.getIndex());
+            cellHeaderStyle.setBorderRight(BorderStyle.THIN);
+            cellHeaderStyle.setRightBorderColor(IndexedColors.RED.getIndex());
+            cellHeaderStyle.setBorderBottom(BorderStyle.THIN);
+            cellHeaderStyle.setBottomBorderColor(IndexedColors.RED.getIndex());
+
+
+
+        }
+        else if(cell.getColumnIndex()==5) {
+            //no left border
+
+            cellHeaderStyle.setBorderTop(BorderStyle.THIN);
+            cellHeaderStyle.setTopBorderColor(IndexedColors.RED.getIndex());
+            cellHeaderStyle.setBorderRight(BorderStyle.THIN);
+            cellHeaderStyle.setRightBorderColor(IndexedColors.RED.getIndex());
+            cellHeaderStyle.setBorderBottom(BorderStyle.THIN);
+            cellHeaderStyle.setBottomBorderColor(IndexedColors.RED.getIndex());
+
+
+
+        }
+        else {
+
+
+            cellHeaderStyle.setBorderTop(BorderStyle.THIN);
+            cellHeaderStyle.setTopBorderColor(IndexedColors.RED.getIndex());
+            cellHeaderStyle.setBorderRight(BorderStyle.THIN);
+           cellHeaderStyle.setRightBorderColor(IndexedColors.RED.getIndex());
+            cellHeaderStyle.setBorderLeft(BorderStyle.THIN);
+            cellHeaderStyle.setLeftBorderColor(IndexedColors.RED.getIndex());
+            cellHeaderStyle.setBorderBottom(BorderStyle.THIN);
+            cellHeaderStyle.setBottomBorderColor(IndexedColors.RED.getIndex());
+        }
+
         return cellHeaderStyle;
 
     }
 
-    public CellStyle changeCellBackgroundColorWithPattern(Cell cell) {
-        CellStyle cellStyleBackground = cell.getCellStyle();
-        if (cellStyleBackground == null) {
-            cellStyleBackground = cell.getSheet().getWorkbook().createCellStyle();
+
+
+
+    protected CellStyle getCellStyleStandart(Workbook workbook, Cell cell) {
+        CellStyle cellStyleStandart = workbook.createCellStyle();
+
+        if (cell.getColumnIndex()==4 && cell.getRowIndex()==2){
+            cellStyleStandart.setVerticalAlignment(DISTRIBUTED);
+            cellStyleStandart.setAlignment(HorizontalAlignment.DISTRIBUTED);
+            //cellStyleStandart.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            //cellStyleStandart.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.getIndex());
         }
-        cellStyleBackground.setFillBackgroundColor(IndexedColors.BLACK.index);
-        cellStyleBackground.setFillPattern(FillPatternType.BIG_SPOTS);
-        cellStyleBackground.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
-        cell.setCellStyle(cellStyleBackground);
-        return cellStyleBackground;
+        else cellStyleStandart.setAlignment(HorizontalAlignment.CENTER);
+
+        if((cell.getColumnIndex() ==0 || cell.getColumnIndex()==2) && (cell.getRowIndex()==1)) {
+            //no right border
+           cellStyleStandart.setBorderBottom(BorderStyle.THIN);
+            //cellStyleStandart.setBorderTop(BorderStyle.THIN);
+            cellStyleStandart.setBorderLeft(BorderStyle.THIN);
+
+        }
+        else if((cell.getColumnIndex()==1 || cell.getColumnIndex()==3) && (cell.getRowIndex()==1)){
+            //no left border
+            cellStyleStandart.setBorderBottom(BorderStyle.THIN);
+            //cellStyleStandart.setBorderTop(BorderStyle.THIN);
+            cellStyleStandart.setBorderRight(BorderStyle.THIN);
+
+        }
+        else {
+            cellStyleStandart.setBorderBottom(BorderStyle.THIN);
+
+            //cellStyleStandart.setBorderTop(BorderStyle.THIN);
+            cellStyleStandart.setBorderLeft(BorderStyle.THIN);
+            cellStyleStandart.setBorderRight(BorderStyle.THIN);
+        }
+        return cellStyleStandart;
     }
 
-
-    protected CellStyle getCellStyleStandart(Workbook workbook) {
-        final XSSFCellStyle cellStyle = (XSSFCellStyle) workbook.createCellStyle();
-        cellStyle.setBorderBottom(BorderStyle.THIN);
-        cellStyle.setBorderTop(BorderStyle.THIN);
-        cellStyle.setBorderLeft(BorderStyle.THIN);
-        cellStyle.setBorderRight(BorderStyle.THIN);
-
-        return cellStyle;
-    }
-
-    protected CellStyle getCellStyleNoRightBorder(Workbook workbook) {
-        final XSSFCellStyle cellStyleNoRightBorder = (XSSFCellStyle) workbook.createCellStyle();
-        cellStyleNoRightBorder.setBorderBottom(BorderStyle.THIN);
-        cellStyleNoRightBorder.setBorderTop(BorderStyle.THIN);
-        cellStyleNoRightBorder.setBorderLeft(BorderStyle.THIN);
-        return cellStyleNoRightBorder;
-    }
-
-    protected CellStyle getCellStyleNoLeftBorder(Workbook workbook) {
-        final XSSFCellStyle cellStyleNoLeftBorder = (XSSFCellStyle) workbook.createCellStyle();
-        cellStyleNoLeftBorder.setBorderBottom(BorderStyle.THIN);
-        cellStyleNoLeftBorder.setBorderTop(BorderStyle.THIN);
-        cellStyleNoLeftBorder.setBorderRight(BorderStyle.THIN);
-        return cellStyleNoLeftBorder;
-    }
 
 
     protected void formatSheet(Sheet sheet) {
