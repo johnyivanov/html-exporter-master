@@ -1,12 +1,12 @@
 /**
  * Copyright (C) 2012 alanhay <alanhay99@hotmail.com>
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,51 +17,88 @@ package de.dfs.html.converter.writer.excel;
 
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFColor;
-import org.apache.poi.xssf.usermodel.XSSFFont;
 
 import javax.swing.text.Style;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.apache.poi.ss.usermodel.FillPatternType.SOLID_FOREGROUND;
-import static org.apache.poi.xssf.usermodel.XSSFCellStyle.*;
+
+import static java.awt.Font.createFont;
 
 public class ExcelStyleGenerator {
-	private Map<Style, XSSFCellStyle> styles;
+    private Map<Style, XSSFCellStyle> styles;
 
-	public ExcelStyleGenerator() {
-		styles = new HashMap<Style, XSSFCellStyle>();
-	}
-
-	public CellStyle getStyle(Cell cell, Style style) {
-		XSSFCellStyle cellStyle;
+    public ExcelStyleGenerator() {
+        styles = new HashMap<Style, XSSFCellStyle>();
+    }
 
 
-			cellStyle = (XSSFCellStyle) cell.getSheet().getWorkbook().createCellStyle();
+    public CellStyle getStyle(Cell cell, Style style) {
+        XSSFCellStyle cellStyle;
 
 
+        cellStyle = (XSSFCellStyle) cell.getSheet().getWorkbook().createCellStyle();
 
-			/*applyBackground(style, cellStyle);
-			applyBorders(style, cellStyle);
+
+        //applyBackground(cell, cellStyle);
+			/*applyBorders(style, cellStyle);
 			applyFont(cell, style, cellStyle);
 			applyHorizontalAlignment(style, cellStyle);
 			applyverticalAlignment(style, cellStyle);
 			applyWidth(cell, style);*/
 
-			styles.put(style, cellStyle);
+        styles.put(style, (XSSFCellStyle) cellStyle);
 
-		cellStyle.setWrapText(true);
-		return cellStyle;
-	}
+        cellStyle.setWrapText(true);
+        return cellStyle;
+    }
 
-	/*protected void applyBackground(Style style, XSSFCellStyle cellStyle) {
-		if (style.isBackgroundSet()) {
+    protected CellStyle getCellHeaderStyle(Workbook workbook, Cell cell, Sheet sheet) {
+        CellStyle cellHeaderStyle = workbook.createCellStyle();
+        Font font = workbook.createFont();
+        font.setFontHeightInPoints((short) 14);
+        font.setFontName("Courier New");
+        font.setBold(true);
+        cellHeaderStyle.setFont(font);
+
+        cellHeaderStyle.setWrapText(true);
+        cellHeaderStyle.setAlignment(HorizontalAlignment.CENTER);
+
+        cellHeaderStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        cellHeaderStyle.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.getIndex());
+
+        cellHeaderStyle.setBorderTop(BorderStyle.THIN);
+        cellHeaderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        cellHeaderStyle.setBorderLeft(BorderStyle.THIN);
+        cellHeaderStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        cellHeaderStyle.setBorderBottom(BorderStyle.THIN);
+        cellHeaderStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        cellHeaderStyle.setBorderRight(BorderStyle.THIN);
+        cellHeaderStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
+
+        return cellHeaderStyle;
+    }
+
+    protected CellStyle getCellStandartStyle(Workbook workbook, Cell cell, Sheet sheet) {
+        CellStyle cellStandartStyle = workbook.createCellStyle();
+        Font font = workbook.createFont();
+        font.setFontName("Courier New");
+        cellStandartStyle.setFont(font);
+        cellStandartStyle.setWrapText(true);
+        cellStandartStyle.setAlignment(HorizontalAlignment.CENTER);
+
+        return cellStandartStyle;
+    }
+
+
+	/*protected CellStyle applyBackground(Cell cell, XSSFCellStyle cellStyle) {
+		/*if (style.isBackgroundSet()) {
 			cellStyle.setFillPattern(SOLID_FOREGROUND);
 			cellStyle.setFillForegroundColor(new XSSFColor(style.getProperty(CssColorProperty.BACKGROUND)));
-		}
-	}
+		}*/
 
+
+/*
 	protected void applyBorders(Style style, XSSFCellStyle cellStyle) {
 		if (style.isBorderWidthSet()) {
 			short width = (short) style.getProperty(CssIntegerProperty.BORDER_WIDTH);
@@ -148,6 +185,6 @@ public class ExcelStyleGenerator {
 			font.setUnderline(Font.U_SINGLE);
 		}
 
-		return font;
-	}*/
+		return font;*/
 }
+

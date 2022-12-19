@@ -36,6 +36,10 @@ import javax.swing.table.TableCellEditor;
 import static org.apache.poi.ss.usermodel.VerticalAlignment.DISTRIBUTED;
 
 public class ExcelExporter extends AbstractExporter {
+    public static int globalColumnIndex;
+    public static int lastInnerRowIndex;
+    public static int lastInnerColumnIndex;
+
     public void exportHtml(String html, OutputStream out) throws IOException {
         Workbook workbook = new XSSFWorkbook();
 
@@ -43,6 +47,9 @@ public class ExcelExporter extends AbstractExporter {
         int startRow = 0;
 
         for (Element element : getTables(html)) {
+            globalColumnIndex = 0;
+            lastInnerRowIndex = 0;
+            lastInnerColumnIndex = 0;
 
             if (workbook.getNumberOfSheets() == 0) {
                 String sheetName = getSheetName(element);
@@ -64,12 +71,26 @@ public class ExcelExporter extends AbstractExporter {
                 startRow = 0;
             }
 
-            //TableWriter writer = new ExcelTableWriter(new ExcelTableRowWriter(sheet, new ExcelTableCellWriter(sheet)));
+            TableWriter writer = new ExcelTableWriter(new ExcelTableRowWriter(sheet, new ExcelTableCellWriter(sheet)));
+
+            startRow += writer.writeTable(element, null, startRow) + 1;
+            sheet.createRow(startRow);
 
 
-            sheet.setDisplayGridlines(false);
+        }
+
+        for (int i = 0; i < workbook.getNumberOfSheets(); ++i) {
+            formatSheet(workbook.getSheetAt(i));
+        }
+        //sheet.setDisplayGridlines(false);
+        //sheet.setDefaultRowHeight((short) 1000);
+        workbook.write(out);
+        out.flush();
+        out.close();
+    }
 
 
+/*
             //sheet.setColumnHidden(1
 
 
@@ -212,21 +233,8 @@ public class ExcelExporter extends AbstractExporter {
             sheet.addMergedRegionUnsafe(CellRangeAddress.valueOf("E3:F3"));
             sheet.addMergedRegionUnsafe(CellRangeAddress.valueOf("E4:F4"));
 
+*/
 
-            //startRow += writer.writeTable(element, null, startRow) + 1;
-            //sheet.createRow(startRow);
-
-
-        }
-
-        for (int i = 0; i < workbook.getNumberOfSheets(); ++i) {
-            formatSheet(workbook.getSheetAt(i));
-        }
-
-        workbook.write(out);
-        out.flush();
-        out.close();
-    }
 
     protected CellStyle getCellHeaderStyle(Workbook workbook, Cell cell) {
         CellStyle cellHeaderStyle = workbook.createCellStyle();
@@ -239,8 +247,8 @@ public class ExcelExporter extends AbstractExporter {
         cellHeaderStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         cellHeaderStyle.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.getIndex());
 
-        if(cell.getColumnIndex() ==0 || cell.getColumnIndex()==2){
-              //no right border
+        if (cell.getColumnIndex() == 0 || cell.getColumnIndex() == 2) {
+            //no right border
 
             cellHeaderStyle.setBorderTop(BorderStyle.THIN);
             cellHeaderStyle.setTopBorderColor(IndexedColors.RED.getIndex());
@@ -250,21 +258,7 @@ public class ExcelExporter extends AbstractExporter {
             cellHeaderStyle.setBottomBorderColor(IndexedColors.RED.getIndex());
 
 
-        }
-       else if(cell.getColumnIndex()==1 || cell.getColumnIndex()==3) {
-            //no left border
-
-            cellHeaderStyle.setBorderTop(BorderStyle.THIN);
-           cellHeaderStyle.setTopBorderColor(IndexedColors.RED.getIndex());
-            cellHeaderStyle.setBorderRight(BorderStyle.THIN);
-            cellHeaderStyle.setRightBorderColor(IndexedColors.RED.getIndex());
-            cellHeaderStyle.setBorderBottom(BorderStyle.THIN);
-            cellHeaderStyle.setBottomBorderColor(IndexedColors.RED.getIndex());
-
-
-
-        }
-        else if(cell.getColumnIndex()==5) {
+        } else if (cell.getColumnIndex() == 1 || cell.getColumnIndex() == 3) {
             //no left border
 
             cellHeaderStyle.setBorderTop(BorderStyle.THIN);
@@ -275,15 +269,24 @@ public class ExcelExporter extends AbstractExporter {
             cellHeaderStyle.setBottomBorderColor(IndexedColors.RED.getIndex());
 
 
+        } else if (cell.getColumnIndex() == 5) {
+            //no left border
 
-        }
-        else {
+            cellHeaderStyle.setBorderTop(BorderStyle.THIN);
+            cellHeaderStyle.setTopBorderColor(IndexedColors.RED.getIndex());
+            cellHeaderStyle.setBorderRight(BorderStyle.THIN);
+            cellHeaderStyle.setRightBorderColor(IndexedColors.RED.getIndex());
+            cellHeaderStyle.setBorderBottom(BorderStyle.THIN);
+            cellHeaderStyle.setBottomBorderColor(IndexedColors.RED.getIndex());
+
+
+        } else {
 
 
             cellHeaderStyle.setBorderTop(BorderStyle.THIN);
             cellHeaderStyle.setTopBorderColor(IndexedColors.RED.getIndex());
             cellHeaderStyle.setBorderRight(BorderStyle.THIN);
-           cellHeaderStyle.setRightBorderColor(IndexedColors.RED.getIndex());
+            cellHeaderStyle.setRightBorderColor(IndexedColors.RED.getIndex());
             cellHeaderStyle.setBorderLeft(BorderStyle.THIN);
             cellHeaderStyle.setLeftBorderColor(IndexedColors.RED.getIndex());
             cellHeaderStyle.setBorderBottom(BorderStyle.THIN);
@@ -295,34 +298,29 @@ public class ExcelExporter extends AbstractExporter {
     }
 
 
-
-
     protected CellStyle getCellStyleStandart(Workbook workbook, Cell cell) {
         CellStyle cellStyleStandart = workbook.createCellStyle();
 
-        if (cell.getColumnIndex()==4 && cell.getRowIndex()==2){
+        if (cell.getColumnIndex() == 4 && cell.getRowIndex() == 2) {
             cellStyleStandart.setVerticalAlignment(DISTRIBUTED);
             cellStyleStandart.setAlignment(HorizontalAlignment.DISTRIBUTED);
             //cellStyleStandart.setFillPattern(FillPatternType.SOLID_FOREGROUND);
             //cellStyleStandart.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.getIndex());
-        }
-        else cellStyleStandart.setAlignment(HorizontalAlignment.CENTER);
+        } else cellStyleStandart.setAlignment(HorizontalAlignment.CENTER);
 
-        if((cell.getColumnIndex() ==0 || cell.getColumnIndex()==2) && (cell.getRowIndex()==1)) {
+        if ((cell.getColumnIndex() == 0 || cell.getColumnIndex() == 2) && (cell.getRowIndex() == 1)) {
             //no right border
-           cellStyleStandart.setBorderBottom(BorderStyle.THIN);
+            cellStyleStandart.setBorderBottom(BorderStyle.THIN);
             //cellStyleStandart.setBorderTop(BorderStyle.THIN);
             cellStyleStandart.setBorderLeft(BorderStyle.THIN);
 
-        }
-        else if((cell.getColumnIndex()==1 || cell.getColumnIndex()==3) && (cell.getRowIndex()==1)){
+        } else if ((cell.getColumnIndex() == 1 || cell.getColumnIndex() == 3) && (cell.getRowIndex() == 1)) {
             //no left border
             cellStyleStandart.setBorderBottom(BorderStyle.THIN);
             //cellStyleStandart.setBorderTop(BorderStyle.THIN);
             cellStyleStandart.setBorderRight(BorderStyle.THIN);
 
-        }
-        else {
+        } else {
             cellStyleStandart.setBorderBottom(BorderStyle.THIN);
 
             //cellStyleStandart.setBorderTop(BorderStyle.THIN);
@@ -331,7 +329,6 @@ public class ExcelExporter extends AbstractExporter {
         }
         return cellStyleStandart;
     }
-
 
 
     protected void formatSheet(Sheet sheet) {

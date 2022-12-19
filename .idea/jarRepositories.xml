@@ -7,6 +7,11 @@
       <option name="url" value="https://repo.maven.apache.org/maven2" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="clojars" />
+      <option name="name" value="Clojars" />
+      <option name="url" value="https://repo.clojars.org/" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="ris-all" />
       <option name="name" value="Nexus Managed RIS-All Repository" />
       <option name="url" value="http://repo.eil.risnet.de:8080/nexus/content/groups/ris-all" />

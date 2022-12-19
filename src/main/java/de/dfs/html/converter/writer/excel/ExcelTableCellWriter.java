@@ -16,20 +16,23 @@
 package de.dfs.html.converter.writer.excel;
 
 import de.dfs.html.converter.ss.CellRange;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.CreationHelper;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.jsoup.nodes.Element;
 import de.dfs.html.converter.ss.Function;
 import de.dfs.html.converter.writer.AbstractTableCellWriter;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.model.StylesTable;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.jsoup.nodes.Element;
+
+import static de.dfs.html.converter.writer.TableRowWriter.*;
+import static de.dfs.html.converter.writer.TableWriter.TD_TABLE;
 
 public class ExcelTableCellWriter extends AbstractTableCellWriter {
 
     private Sheet sheet;
     private ExcelStyleGenerator styleGenerator;
 
-    public ExcelTableCellWriter (Sheet sheet){
+
+    public ExcelTableCellWriter(Sheet sheet) {
         this.sheet = sheet;
 
 
@@ -38,17 +41,33 @@ public class ExcelTableCellWriter extends AbstractTableCellWriter {
 
     @Override
     public void renderCell(Element element, int rowIndex, int columnIndex) {
+        if (element.getElementsByTag(TD_TABLE).size() == 1 ) {
+            renderInnerTable(element, rowIndex,columnIndex);
+            return;
+        }
 
-        int cellHight = element.wholeText().length() - element.wholeText().replace(System.lineSeparator(), "").length();
-        if(cellHight>0){
-            sheet.getRow(rowIndex).setHeightInPoints(((cellHight-2)*sheet.getDefaultRowHeightInPoints()));
 
+
+
+
+        if (sheet.getRow(rowIndex) == null) {
+            sheet.createRow(rowIndex);
         }
         Cell cell = sheet.getRow(rowIndex).createCell(columnIndex, CellType.STRING);
         cell.setCellValue(getElementText(element));
 
+        /*int cellHight = element.wholeText().length() - element.wholeText().replace(System.lineSeparator(), "").length();
+        if (cellHight > 0) {
+            sheet.getRow(rowIndex).setHeightInPoints(((cellHight - 2) * sheet.getDefaultRowHeightInPoints()));
+        }*/
 
-        cell.setCellStyle(styleGenerator.getStyle(cell, null));
+     sheet.getRow(rowIndex).setHeightInPoints(50);
+     sheet.setColumnWidth(columnIndex,4000);
+
+       // sheet.autoSizeColumn(columnIndex);
+        if(element.tag().getName().equals(TH_TAG)) {
+            cell.setCellStyle(styleGenerator.getCellHeaderStyle(sheet.getWorkbook(),cell,sheet));
+        } else cell.setCellStyle(styleGenerator.getCellStandartStyle(sheet.getWorkbook(),cell,sheet));
 
         if (isDateCell(element)) {
             CreationHelper createHelper = sheet.getWorkbook().getCreationHelper();
@@ -65,10 +84,32 @@ public class ExcelTableCellWriter extends AbstractTableCellWriter {
             sheet.createFreezePane(columnIndex, rowIndex);
         }
     }
+    private void renderInnerTable(Element table, int rowIndex, int columnIndex) {
+
+        for (Element tableRow : table.getElementsByTag(TABLE_ROW_ELEMENT_NAME)) {
+
+            for (Element element : tableRow.getAllElements()) {
+
+                if (element.tag().getName().equals(TD_TAG) ) {
+                    //columnIndex = rowTracker.getNextColumnIndexForRow(rowIndex);
+                    writeCell(element, rowIndex, columnIndex,false);
+                    ExcelExporter.lastInnerColumnIndex = columnIndex;
+                    columnIndex++;
+                }
+            }
+            ExcelExporter.globalColumnIndex = columnIndex;
+            columnIndex = 0;
+            ++rowIndex;
+            ExcelExporter.lastInnerRowIndex = rowIndex;
+        }
+
+    }
 
     public void addFunctionCell(int rowIndex, int columnIndex, CellRange range, Function function) {
         Cell cell = sheet.getRow(rowIndex).getCell(columnIndex);
 
         new ExcelFunctionCell(cell, range, new ExcelCellRangeResolver(), function);
     }
+
+
 }

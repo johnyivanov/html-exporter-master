@@ -15,6 +15,8 @@
  */
 package de.dfs.html.converter.writer;
 
+import de.dfs.html.converter.writer.excel.ExcelExporter;
+import de.dfs.html.converter.writer.excel.ExcelTableWriter;
 import org.jsoup.nodes.Element;
 
 public abstract class AbstractTableRowWriter implements TableRowWriter {
@@ -28,19 +30,24 @@ public abstract class AbstractTableRowWriter implements TableRowWriter {
 
     public void writeRow(Element row, int rowIndex) {
         renderRow(row, rowIndex);
+        if (ExcelExporter.lastInnerRowIndex >0  && rowIndex < ExcelExporter.lastInnerRowIndex ) {
 
-        for (Element element : row.getAllElements()) {
+            ExcelExporter.globalColumnIndex = ExcelExporter.lastInnerColumnIndex + 1;
+        } else{
+            ExcelExporter.globalColumnIndex = 0;
+        }
+        for (Element element : row.children()) {
             if (element.tag().getName().equals(TD_TAG) || element.tag().getName().equals(TH_TAG)) {
-                int columnIndex = rowTracker.getNextColumnIndexForRow(rowIndex);
-                cellWriter.writeCell(element, rowIndex, columnIndex);
 
-                int rowSpan = getRowSpan(element);
+                //ExcelExporter.globalColumnIndex = rowTracker.getNextColumnIndexForRow(rowIndex);
+                cellWriter.writeCell(element, rowIndex, ExcelExporter.globalColumnIndex,true);
+                int rowSpan = 1;
                 int columnSpan = getColumnSpan(element);
 
-                rowTracker.addCell(rowIndex, columnIndex, rowSpan, columnSpan);
+                rowTracker.addCell(rowIndex, ExcelExporter.globalColumnIndex, rowSpan, columnSpan);
 
                 if (rowSpan > 1 || columnSpan > 1) {
-                    doMerge(rowIndex, columnIndex, rowSpan, columnSpan);
+                    doMerge(rowIndex, ExcelExporter.globalColumnIndex - 1, rowSpan, columnSpan);
                 }
             }
         }

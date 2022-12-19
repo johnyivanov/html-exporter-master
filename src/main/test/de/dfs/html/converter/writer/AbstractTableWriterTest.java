@@ -28,7 +28,8 @@ class AbstractTableWriterTest {
     }
 
 
-    @Test
+   /* @Test
+    @Disabled
     void testWriteTable2() {
         TableRowWriter tableRowWriter = mock(TableRowWriter.class);
         doNothing().when(tableRowWriter).writeRow((Element) any(), anyInt());
@@ -38,6 +39,7 @@ class AbstractTableWriterTest {
     }
 
         @Test
+        @Disabled
     void testWriteTable3() {
         TableRowWriter tableRowWriter = mock(TableRowWriter.class);
         doNothing().when(tableRowWriter).writeRow((Element) any(), anyInt());
@@ -48,6 +50,7 @@ class AbstractTableWriterTest {
 
 
     @Test
+    @Disabled
     void testWriteTable4() {
         TableRowWriter tableRowWriter = mock(TableRowWriter.class);
         doNothing().when(tableRowWriter).writeRow((Element) any(), anyInt());
@@ -57,7 +60,7 @@ class AbstractTableWriterTest {
         assertEquals(0,
                 excelTableWriter.writeTable(new Element(tag, TableWriter.TABLE_ROW_ELEMENT_NAME), "Style Mapper", 1));
         verify(tag).normalName();
-    }
+    }*/
 
     @Test
     void testWriteTable5() {

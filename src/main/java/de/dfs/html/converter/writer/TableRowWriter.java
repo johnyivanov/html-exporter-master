@@ -18,8 +18,12 @@ package de.dfs.html.converter.writer;
 import org.jsoup.nodes.Element;
 
 public interface TableRowWriter {
+	public static final String TABLE_ROW_ELEMENT_NAME = "tr";
+	public static final String TABLE_BODY = "tbody";
+
 	public static final String TD_TAG = "td";
 	public static final String TH_TAG = "th";
+
 
 	public void writeRow(Element element, int row);
 }
